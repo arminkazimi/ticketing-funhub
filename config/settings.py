@@ -39,8 +39,16 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     # my app
+    "pages",
+    "accounts",
     "tickets",
+    
+    # third-party
+    "widget_tweaks",
 ]
+
+# Custom user model
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -57,7 +65,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -114,3 +122,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'ticket-list'
+LOGOUT_REDIRECT_URL = 'home'

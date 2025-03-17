@@ -1,0 +1,25 @@
+{% extends '_base.html' %} {% block title %}Welcome to FunHub{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1 class="display-4 mb-4">Welcome to FunHub</h1>
+                <p class="lead mb-5">
+                    Your one-stop destination for event ticketing and management
+                </p>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'ticket-list' %}" class="btn btn-primary btn-lg">Tickets Section</a>
+
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Login</a>
+
+                    {% endif %}
+                    {#                    <!-- <a href="{% url 'register' %}" class="btn btn-outline-primary btn-lg"#}
+                    {#          >Register</a#}
+                    {#        > -->#}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

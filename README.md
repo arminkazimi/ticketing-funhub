@@ -50,7 +50,7 @@ FunHub Ticketing System is a Django-based support ticket management system that 
 
 ### Prerequisites
 
-- Python 3.x
+- Python 3.6
 - pip (Python package manager)
 
 ### Setup Steps
@@ -94,17 +94,9 @@ The project includes comprehensive test coverage for all major components:
 
 ### Running Tests
 
-- Run all tests:
-
-  ```bash
-  python manage.py test
-  ```
-
 - Run specific app tests:
   ```bash
-  python manage.py test accounts
-  python manage.py test tickets
-  python manage.py test pages
+  python manage.py test APP_NAME.tests.TEST_FILENAME_WITHUOT_SUFFIX
   ```
 
 ### Test Coverage
@@ -116,7 +108,7 @@ The project includes comprehensive test coverage for all major components:
 
 ## Usage Guide
 
-### User Roles
+### User Groups
 
 1. **Regular Users**
 
@@ -124,7 +116,7 @@ The project includes comprehensive test coverage for all major components:
    - Can view and reply to their own tickets
    - Can close their own tickets
 
-2. **Support Staff**
+2. **Support Staff(Admin)**
    - Can view all tickets
    - Can reply to any ticket
    - Can close any ticket
@@ -172,4 +164,3 @@ The project includes comprehensive test coverage for all major components:
 - Implemented permission-based access control
 - Secure file upload handling
 - Protected against unauthorized access
-- Email verification for user registration

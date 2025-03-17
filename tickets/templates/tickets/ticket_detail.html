@@ -1,0 +1,101 @@
+{% extends '_base.html' %} {% block content %}
+    <div class="container mt-4">
+        {% if messages %} {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %} {% endif %}
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0">{{ ticket.title }}</h3>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ ticket.description }}</p>
+                <div class="d-flex justify-content-between">
+                    <small class="text-muted"
+                    >Created: {{ ticket.created_at|date:"M d, Y H:i" }}</small
+                    >
+                    <span
+                            class="badge bg-{% if ticket.status == 'open' %}primary{% elif ticket.status == 'in_progress' %}warning{% elif ticket.status == 'resolved' %}success{% else %}secondary{% endif %}"
+                    >{{ ticket.get_status_display }}</span
+                    >
+                </div>
+                {% if ticket.attachment %}
+                    <div class="mt-3">
+                        <strong>Attachment:</strong>
+                        <a
+                                href="{{ ticket.attachment.url }}"
+                                target="_blank"
+                                class="btn btn-sm btn-outline-secondary"
+                        >Download Attachment</a
+                        >
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h4>Messages</h4>
+            </div>
+            <div class="card-body">
+                {% if replies %} {% for reply in replies %}
+                    <div class="border-bottom mb-3 pb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong>{{ reply.user.email }}</strong>
+                            <small class="text-muted"
+                            >{{ reply.created_at|date:"M d, Y H:i" }}</small
+                            >
+                        </div>
+                        <p class="mt-2 mb-2">{{ reply.content }}</p>
+                        {% if reply.attachment %}
+                            <div class="mt-2">
+                                <a
+                                        href="{{ reply.attachment.url }}"
+                                        target="_blank"
+                                        class="btn btn-sm btn-outline-secondary"
+                                >View Attachment</a
+                                >
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %} {% else %}
+                    <p class="text-muted">No replies yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if ticket.status != 'closed' %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Add Reply</h4>
+                </div>
+                <div class="card-body">
+                    <form
+                            method="post"
+                            action="{% url 'ticket-reply' ticket.pk %}"
+                            enctype="multipart/form-data"
+                    >
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            {{ form.content.label_tag }} {{ form.content }}
+                            {% if form.content.help_text %}
+                            <small class="form-text text-muted">{{ form.content.help_text }}</small>
+                        {% endif %}
+                        </div>
+                        <div class="form-group mb-3">
+                            {{ form.attachment.label_tag }} {{ form.attachment }}
+                            {% if form.attachment.help_text %}
+                                <small class="form-text text-muted">{{ form.attachment.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Reply</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %} {% if ticket.status != 'closed' and user == ticket.created_by or perms.tickets.can_view_all_tickets %}
+        <form method="post" action="{% url 'close-ticket' ticket.pk %}" class="mb-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Close Ticket</button>
+        </form>
+    {% endif %}
+    </div>
+{% endblock %}

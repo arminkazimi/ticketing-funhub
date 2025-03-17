@@ -15,7 +15,7 @@ FunHub Ticketing System is a Django-based support ticket management system that 
 - Permission System:
   - Regular users can create and manage their tickets
   - Support staff can view and respond to all tickets
-  - Role-based access control
+  - Group-based access control
 
 ## System Architecture
 
